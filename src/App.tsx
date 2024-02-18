@@ -7,10 +7,15 @@ import DeleteConfirmation from "./components/DeleteConfirmation.tsx";
 import logoImg from "./assets/logo.png";
 import { sortPlacesByDistance } from "./loc.ts";
 
+const storedId = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+const storedPlaces = storedId.map((id) =>
+  AVAILABLE_PLACES.find((place) => place.id === id),
+);
 function App() {
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+
+  const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
   const [availablePlaces, setAvailablePlaces] = useState([]);
   /**
    * Sort places by distance from the user's current location.
@@ -64,6 +69,12 @@ function App() {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current),
     );
     modal.current.close();
+
+    const storedId = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+    localStorage.setItem(
+      "selectedPlaces",
+      JSON.stringify(storedId.filter((id) => id !== selectedPlace.current)),
+    );
   }
 
   return (
