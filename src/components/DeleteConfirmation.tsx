@@ -1,29 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { ProgressBar } from "./ProgressBar.tsx";
 
 const TIMER = 3000;
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
-  const [remainingTime, setRemainingTime] = useState(TIMER);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      console.log("setInterval");
-      setRemainingTime((prevTime) => prevTime - 100);
-    }, 100);
-
-    return () => {
-      console.log("clearing interval");
-      clearInterval(interval);
-    };
-  }, []);
-
   // function prop in dependency array are very dangerous and can cause infinite loops
   useEffect(() => {
-    console.log("This will run after 3 seconds!");
+    console.log("set timer!");
     const timer = setTimeout(() => {
       onConfirm();
     }, TIMER);
     return () => {
-      console.log("clearing timeout");
+      console.log("clearing timer");
       clearTimeout(timer);
     };
   }, [onConfirm]);
@@ -39,7 +26,7 @@ export default function DeleteConfirmation({ onConfirm, onCancel }) {
         <button onClick={onConfirm} className="button">
           Yes
         </button>
-        <progress value={remainingTime} max={TIMER} />
+        <ProgressBar timer={TIMER} />
       </div>
     </div>
   );
