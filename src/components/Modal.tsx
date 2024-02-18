@@ -6,11 +6,13 @@ function Modal({ open, children }) {
 
   useEffect(() => {
     if (open) {
+      // @ts-ignore
       dialog.current.showModal();
     } else {
+      // @ts-ignore
       dialog.current.close();
     }
-  }, []);
+  }, [open]);
   return createPortal(
     <dialog className="modal" ref={dialog}>
       {children}
