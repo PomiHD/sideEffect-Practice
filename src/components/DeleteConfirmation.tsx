@@ -3,10 +3,14 @@ import { useEffect } from "react";
 export default function DeleteConfirmation({ onConfirm, onCancel }) {
   // function prop in dependency array are very dangerous and can cause infinite loops
   useEffect(() => {
+    console.log("This will run after 3 seconds!");
     const timer = setTimeout(() => {
       onConfirm();
     }, 3000);
-    return () => clearTimeout(timer);
+    return () => {
+      console.log("clearing timeout");
+      clearTimeout(timer);
+    };
   }, [onConfirm]);
 
   return (

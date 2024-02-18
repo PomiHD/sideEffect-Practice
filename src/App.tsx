@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 import Places from "./components/Places.tsx";
 import { AVAILABLE_PLACES } from "./data.ts";
@@ -63,7 +63,7 @@ function App() {
     }
   }
 
-  function handleRemovePlace() {
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
     setPickedPlaces((prevPickedPlaces) =>
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current),
     );
@@ -73,7 +73,7 @@ function App() {
       "selectedPlaces",
       JSON.stringify(storedId.filter((id) => id !== selectedPlace.current)),
     );
-  }
+  }, []);
 
   return (
     <>
