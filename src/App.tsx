@@ -12,6 +12,13 @@ function App() {
   const selectedPlace = useRef();
   const [pickedPlaces, setPickedPlaces] = useState([]);
   const [availablePlaces, setAvailablePlaces] = useState([]);
+  /**
+   * Sort places by distance from the user's current location.
+   * This effect runs once when the component mounts.
+   * It uses the Geolocation API to get the user's current location.
+   * The sorted places are then set in the state.
+   * If the user denies access to their location, the places are not sorted.
+   */
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       const sortedPlaces = sortPlacesByDistance(
@@ -40,6 +47,16 @@ function App() {
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
       return [place, ...prevPickedPlaces];
     });
+    /**
+     * Store the selected place's id in localStorage.
+     * This way, the selected places persist even after the page is reloaded.
+     * The selected places are stored as an array of ids.
+     * If the selected places are not in localStorage, an empty array is used.
+     */
+    const storedId = JSON.parse(localStorage.getItem("selectedPlaces")) || [];
+    if (!storedId.includes(id)) {
+      localStorage.setItem("selectedPlaces", JSON.stringify([...storedId, id]));
+    }
   }
 
   function handleRemovePlace() {
